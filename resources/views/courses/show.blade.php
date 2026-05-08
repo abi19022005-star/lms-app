@@ -10,7 +10,7 @@
 
         @if($course->thumbnail)
             <img src="{{ Storage::url($course->thumbnail) }}"
-                 class="w-full max-h-[400px] object-cover">
+                 class="w-full max-h-[200px] object-cover">
         @endif
 
         <div class="p-6">
@@ -117,7 +117,23 @@
                                 </p>
                             </div>
 
-                            @if(isset($enrollment) && $enrollment)
+                            @if(auth()->check() && (auth()->user()->isGuru() || auth()->user()->isAdmin()) && auth()->id() == $course->guru_id)
+                                <!-- Guru Actions -->
+                                <div class="flex gap-2">
+                                    <a href="{{ route('lessons.edit', [$course, $lesson]) }}"
+                                       class="px-3 py-1 text-xs bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('lessons.destroy', [$course, $lesson]) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="px-3 py-1 text-xs bg-red-500 text-white rounded-lg hover:bg-red-600"
+                                                onclick="return confirm('Yakin hapus lesson ini?')">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            @elseif(isset($enrollment) && $enrollment)
                                 @if($lesson->isCompletedByUser(auth()->id()))
                                     <span class="px-2 py-1 text-xs bg-emerald-100 text-emerald-700 rounded-lg">
                                         ✔ Selesai

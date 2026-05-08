@@ -141,12 +141,14 @@ class CourseController extends Controller
 
     public function edit(Course $course)
     {
+        $this->authorize('update', $course);
         $categories = Category::all();
         return view('courses.edit', compact('course', 'categories'));
     }
 
     public function update(Request $request, Course $course)
     {
+        $this->authorize('update', $course);
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
@@ -172,6 +174,7 @@ class CourseController extends Controller
 
     public function destroy(Course $course)
     {
+        $this->authorize('delete', $course);
         // Hapus thumbnail
         if ($course->thumbnail) {
             Storage::disk('public')->delete($course->thumbnail);

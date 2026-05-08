@@ -18,6 +18,7 @@ class Lesson extends Model implements Sortable
         'tipe',
         'url_video',
         'file_pdf',
+        'material_file',
         'order',
     ];
 
@@ -44,6 +45,12 @@ class Lesson extends Model implements Sortable
         return $this->completions()->where('user_id', $userId)->exists();
     }
 
+    // Override route key to use id
+    public function getRouteKeyName()
+    {
+        return 'id';
+    }
+
     // Helper: Dapatkan tipe konten
     public function getContentTypeAttribute()
     {
@@ -53,5 +60,10 @@ class Lesson extends Model implements Sortable
             'pdf' => 'PDF',
         ];
         return $types[$this->tipe] ?? 'Unknown';
+    }
+    // Helper: Cek apakah lesson sudah diselesaikan oleh user
+    public function isCompletedBy($userId)
+    {
+        return $this->completions()->where('user_id', $userId)->exists();
     }
 }

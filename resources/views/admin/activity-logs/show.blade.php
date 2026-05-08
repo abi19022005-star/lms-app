@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Activity Log #' . $log->id)
+@section('title', 'Detail Activity Log ' . ($log->user_name ?? $log->user_id))
 
 @section('content')
 <div class="max-w-5xl mx-auto space-y-6">
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800 font-poppins">
-                <i class="fas fa-info-circle mr-3 text-blue-600"></i>Detail Activity Log #{{ $log->id }}
+            <h1 class="text-2xl font-bold text-gray-800 font-poppins" >
+                <i class="fas fa-info-circle mr-3 text-blue-600" ></i>Detail Activity Log {{ $log->user_name ?? $log->user_id }}
             </h1>
             <p class="text-sm text-gray-500 mt-1">Informasi lengkap aktivitas sistem</p>
         </div>
@@ -30,14 +30,14 @@
             <div class="p-5 space-y-4">
                 <div class="flex justify-between items-center pb-3 border-b border-gray-100">
                     <span class="text-sm text-gray-500">ID</span>
-                    <span class="text-sm font-medium text-gray-800">#{{ $log->id }}</span>
+                    <span class="text-sm font-medium text-gray-800"> {{  $log->user_id }}</span>
                 </div>
                 <div class="flex justify-between items-center pb-3 border-b border-gray-100">
                     <span class="text-sm text-gray-500">User</span>
                     <span class="text-sm font-medium text-gray-800">
                         @if($log->user_id)
                             <a href="{{ route('admin.users.edit', $log->user_id) }}" class="text-blue-600 hover:text-blue-700">
-                                User #{{ $log->user_id }}
+                                User {{ $log->user_name ?? $log->user_id }}
                             </a>
                         @else
                             <span class="text-gray-400">System</span>

@@ -25,7 +25,7 @@
 
     <!-- Filter -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-        <form method="GET" action="{{ route('courses.my') }}" class="flex flex-wrap gap-3 items-end">
+        <form method="GET" action="{{ route('siswa.courses.my') }}" class="flex flex-wrap gap-3 items-end">
 
             <div class="flex-1 min-w-[180px]">
                 <label class="text-xs text-gray-500 font-medium">Cari</label>

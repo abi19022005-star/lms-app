@@ -16,7 +16,18 @@
     <!-- Card -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
 
-        <form action="{{ route('lessons.update', $lesson) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+        @if ($errors->any())
+            <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <h3 class="font-semibold text-red-800 mb-2">❌ Ada Kesalahan pada Form:</h3>
+                <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('lessons.update', [$course, $lesson]) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
             @csrf
             @method('PUT')
 
@@ -129,6 +140,41 @@
                 @endif
             </div>
 
+            <!-- MATERI PEMBELAJARAN (OPSIONAL) -->
+            {{-- <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1">
+                    <i class="fas fa-paperclip mr-1"></i> Materi Pembelajaran (Opsional)
+                </label>
+
+                <input type="file"
+                       name="material_file"
+                       accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.rar"
+                       class="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl @error('material_file') border-red-500 @enderror">
+
+                <p class="text-xs text-gray-400 mt-1">
+                    Kosongkan jika tidak ingin mengubah. Tipe: PDF, Word, PowerPoint, Excel, ZIP, RAR (Max 100MB)
+                </p>
+
+                @error('material_file')
+                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                @enderror
+
+                @if($lesson->material_file)
+                    <div class="bg-gray-50 p-3 rounded-xl text-sm mt-2">
+                        <a href="{{ Storage::url($lesson->material_file) }}"
+                           target="_blank"
+                           class="text-blue-600 hover:underline">
+                            <i class="fas fa-download mr-1"></i> Download Materi Saat Ini
+                        </a>
+
+                        <div class="mt-2">
+                            <label class="text-red-600 text-xs">
+                                <input type="checkbox" name="remove_material"> Hapus Materi saat ini
+                            </label>
+                        </div>
+                    </div>
+                @endif
+            </div> --}}
             <!-- ACTION -->
             <div class="flex justify-between pt-4">
                 <a href="{{ route('courses.show', $lesson->course) }}"
@@ -149,49 +195,62 @@
 </div>
 
 @push('scripts')
-<script>
-function toggleContentType() {
-    const tipe = document.getElementById('tipe').value;
+    <script>
+    function toggleContentType() {
+        const tipe = document.getElementById('tipe').value;
 
-    document.querySelectorAll('.content-type').forEach(el => {
-        el.classList.add('hidden');
+        // Hide all content types first
+        document.querySelectorAll('.content-type').forEach(el => {
+            el.classList.add('hidden');
+        });
+
+        // Show the selected content type
+        if (tipe === 'teks') {
+            document.getElementById('teks-content').classList.remove('hidden');
+        } else if (tipe === 'video') {
+            document.getElementById('video-content').classList.remove('hidden');
+        } else if (tipe === 'pdf') {
+            document.getElementById('pdf-content').classList.remove('hidden');
+        }
+
+        // Also show any fields that have validation errors (even if hidden)
+        document.querySelectorAll('.content-type').forEach(el => {
+            if (el.querySelector('.border-red-500, .text-red-500')) {
+                el.classList.remove('hidden');
+            }
+        });
+    }
+
+    // INIT - run once on page load
+    toggleContentType();
+
+    // Listen to type changes
+    document.getElementById('tipe')?.addEventListener('change', toggleContentType);
+
+    // YouTube Preview
+    document.getElementById('url_video')?.addEventListener('input', function() {
+        const url = this.value;
+        const videoId = extractYouTubeId(url);
+        const preview = document.getElementById('video-preview');
+
+        if (videoId) {
+            preview.innerHTML = `
+                <div class="bg-blue-50 text-blue-700 text-xs p-3 rounded-xl">
+                    Preview: https://www.youtube.com/watch?v=${videoId}
+                </div>
+            `;
+        } else {
+            preview.innerHTML = '';
+        }
     });
 
-    if (tipe === 'teks') {
-        document.getElementById('teks-content').classList.remove('hidden');
-    } else if (tipe === 'video') {
-        document.getElementById('video-content').classList.remove('hidden');
-    } else if (tipe === 'pdf') {
-        document.getElementById('pdf-content').classList.remove('hidden');
+    function extractYouTubeId(url) {
+        // const regExp = /^.*(youtu.be\\/|v\\/|u\\/\\w\\/|embed\\/|watch\\?v=|&v=)([^#&?]*).*/;
+        const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
     }
-}
-
-// INIT
-toggleContentType();
-
-// YouTube Preview
-document.getElementById('url_video')?.addEventListener('input', function() {
-    const url = this.value;
-    const videoId = extractYouTubeId(url);
-    const preview = document.getElementById('video-preview');
-
-    if (videoId) {
-        preview.innerHTML = `
-            <div class="bg-blue-50 text-blue-700 text-xs p-3 rounded-xl">
-                Preview: https://www.youtube.com/watch?v=${videoId}
-            </div>
-        `;
-    } else {
-        preview.innerHTML = '';
-    }
-});
-
-function extractYouTubeId(url) {
-    const regExp = /^.*(youtu.be\\/|v\\/|u\\/\\w\\/|embed\\/|watch\\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-}
-</script>
+    </script>
 @endpush
 
 @endsection

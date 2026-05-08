@@ -57,9 +57,21 @@
 
                     <!-- Right Illustration -->
                     <div class="hidden lg:flex justify-center">
-                        <div class="relative">
-                            <div class="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-2xl blur-2xl"></div>
-                            <img src="https://via.placeholder.com/500x400?text=Learning+Illustration" alt="Learning" class="relative rounded-2xl shadow-2xl w-full">
+                        <div class="relative group">
+
+                            <!-- Glow Background -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-3xl blur-2xl opacity-70 group-hover:opacity-100 transition duration-500"></div>
+
+                            <!-- Image Wrapper -->
+                            <div class="relative overflow-hidden rounded-3xl">
+                                <img src="{{asset('storage/elearning-cover.jpg')}}"
+                                    alt="Learning"
+                                    class="w-80 h-80 object-cover rounded-full shadow-2xl transform group-hover:scale-105 transition duration-500 ease-in-out">
+
+                                <!-- Overlay -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

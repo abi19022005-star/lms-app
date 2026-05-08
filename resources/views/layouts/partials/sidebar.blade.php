@@ -1,7 +1,15 @@
 <!-- Sidebar Modern -->
-<aside id="sidebar" class="fixed inset-y-0 left-0 z-20 w-72 bg-white border-r border-gray-200 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:shadow-sm">
+<aside
+    id="sidebar"
+    class="fixed inset-y-0 left-0 z-20 w-72 bg-white border-r border-gray-200 shadow-lg transition-all duration-300 ease-in-out md:relative md:z-10 md:shadow-sm"
+    :style="{'transform': sidebarOpen ? 'translateX(0)' : 'translateX(-100%)', 'display': 'flex', 'flexDirection': 'column'}"
+    @click.away=" sidebarOpen = false">
     <!-- Overlay untuk mobile -->
-    <div id="sidebarOverlay" class="fixed inset-0 z-10 hidden bg-black/50 md:hidden" @click="toggleSidebar()"></div>
+    <div
+        id="sidebarOverlay"
+        @click="sidebarOpen = false"
+        class="fixed inset-0 z-10 bg-black/50 md:hidden transition-opacity"
+        :style="{'opacity': sidebarOpen ? '1' : '0', 'pointerEvents': sidebarOpen ? 'auto' : 'none'}"></div>
 
     <div class="flex flex-col h-full">
         <!-- Sidebar Header -->
@@ -58,9 +66,9 @@
                     <p class="text-xs font-semibold tracking-wider text-gray-400 uppercase">Menu Siswa</p>
                 </div>
 
-                <a href="{{ route('courses.my') }}"
-                class="flex items-center gap-3 px-3 py-2.5 pl-8 text-sm rounded-xl transition-all duration-200 group {{ request()->routeIs('courses.my') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-colors duration-200 {{ request()->routeIs('courses.my') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <a href="{{ route('siswa.courses.my') }}"
+                class="flex items-center gap-3 px-3 py-2.5 pl-8 text-sm rounded-xl transition-all duration-200 group {{ request()->routeIs('siswa.courses.my') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-colors duration-200 {{ request()->routeIs('siswa.courses.my') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
                     </svg>
                     <span>Kursus Saya</span>
@@ -82,15 +90,30 @@
                     <p class="text-xs font-semibold tracking-wider text-gray-400 uppercase">Menu Guru</p>
                 </div>
 
-                <a href="{{ route('courses.index') }}"
-                class="flex items-center gap-3 px-3 py-2.5 pl-8 text-sm rounded-xl transition-all duration-200 group {{ request()->routeIs('courses.index') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-colors duration-200 {{ request()->routeIs('courses.index') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <a href="{{ route('guru.courses.index') }}"
+                class="flex items-center gap-3 px-3 py-2.5 pl-8 text-sm rounded-xl transition-all duration-200 group {{ request()->routeIs('guru.courses.index') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-colors duration-200 {{ request()->routeIs('guru.courses.index') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
                     </svg>
 
                     <span>Kursus Saya</span>
                 </a>
+                <a href="{{ route('guru.students.index') }}"class="flex items-center gap-3 px-3 py-2.5 pl-8 text-sm rounded-xl transition-all duration-200 group {{ request()->routeIs('guru.students.index') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-colors duration-200 {{ request()->routeIs('guru.students.index') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+                    </svg>
+                    <span>Siswa Saya</span>
+                </a>
 
+
+
+                <a href="{{ route('grading.index') }}"
+                class="flex items-center gap-3 px-3 py-2.5 pl-8 text-sm rounded-xl transition-all duration-200 group {{ request()->routeIs('grading.*') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-colors duration-200 {{ request()->routeIs('grading.*') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+                    </svg>
+                    <span>Penilaian</span>
+                </a>
                 <a href="{{ route('courses.create') }}"
                 class="flex items-center gap-3 px-3 py-2.5 pl-8 text-sm rounded-xl transition-all duration-200 group {{ request()->routeIs('courses.create') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50' }}">
                     <svg class="w-5 h-5 transition-colors duration-200 {{ request()->routeIs('courses.create') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,14 +123,6 @@
                     <span>Buat Kursus Baru</span>
                 </a>
 
-                <a href="{{ route('grading.index') }}"
-                class="flex items-center gap-3 px-3 py-2.5 pl-8 text-sm rounded-xl transition-all duration-200 group {{ request()->routeIs('grading.*') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-colors duration-200 {{ request()->routeIs('grading.*') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
-                    </svg>
-
-                    <span>Penilaian</span>
-                </a>
                 @endif
 
                 <!-- ADMIN -->
@@ -122,6 +137,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
                     </svg>
                     <span>Kelola Pengguna</span>
+                </a>
+
+                <a  href="{{ route('admin.students.index') }}"
+                class="flex items-center gap-3 px-3 py-2.5 pl-8 text-sm rounded-xl transition-all duration-200 group {{ request()->routeIs('admin.students.*') ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-gray-600 hover:bg-gray-50' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-colors duration-200 {{ request()->routeIs('admin.students.*') ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                    </svg>
+                    <span> Semua Siswa</span>
                 </a>
 
                 <a href="{{ route('admin.categories.index') }}"
@@ -186,7 +209,7 @@
         <!-- Sidebar Footer (Version Info) -->
         <div class="p-4 border-t border-gray-100">
             <div class="flex items-center justify-between text-xs text-gray-400">
-                <span>© 2024 {{ setting('app_name', config('app.name')) }}</span>
+                <span>© 2026 {{ setting('app_name', config('app.name')) }}</span>
                 <span>v2.0.0</span>
             </div>
         </div>

@@ -10,12 +10,14 @@
     <!-- Fonts: Inter & Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Tailwind CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Custom Tailwind Config Override -->
-    <script>
+    {{-- <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -45,7 +47,7 @@
                 }
             }
         }
-    </script>
+    </script> --}}
 
     <style>
         /* Custom scrollbar */
@@ -82,11 +84,35 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* Sidebar desktop responsive */
+        @media (min-width: 768px) {
+            #sidebar {
+                transform: translateX(0) !important;
+                position: relative !important;
+            }
+            #sidebarOverlay {
+                display: none !important;
+            }
+        }
     </style>
 
     @stack('styles')
 </head>
-<body class="bg-gray-50 font-sans antialiased">
+<body class="bg-gray-50 font-sans antialiased"
+    x-data="{
+        sidebarOpen: false,
+        toggleSidebar() {
+            this.sidebarOpen = !this.sidebarOpen;
+        },
+        handleResize() {
+            if (window.innerWidth >= 768) {
+                this.sidebarOpen = false;
+            }
+        }
+    }"
+    @resize.window="handleResize()"
+>
     <!-- Header / Navbar -->
     @include('layouts.partials.header')
 

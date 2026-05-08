@@ -18,6 +18,17 @@
     <!-- Form -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
 
+        @if ($errors->any())
+            <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <h3 class="font-semibold text-red-800 mb-2">❌ Ada Kesalahan pada Form:</h3>
+                <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('lessons.store', $course) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
             @csrf
 
@@ -106,6 +117,26 @@
                 @enderror
             </div>
 
+            <!-- MATERI PEMBELAJARAN (OPSIONAL) -->
+            {{-- <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1">
+                    <i class="fas fa-paperclip mr-1"></i> Materi Pembelajaran (Opsional)
+                </label>
+
+                <input type="file"
+                       name="material_file"
+                       accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.rar"
+                       class="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl @error('material_file') border-red-500 @enderror">
+
+                <p class="text-xs text-gray-400 mt-1">
+                    Tipe: PDF, Word, PowerPoint, Excel, ZIP, RAR (Max 100MB)
+                </p>
+
+                @error('material_file')
+                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                @enderror
+            </div> --}}
+
             <!-- ACTION -->
             <div class="flex justify-between pt-4">
 
@@ -132,10 +163,12 @@
 function toggleContentType() {
     const tipe = document.getElementById('tipe').value;
 
+    // Hide all content types first
     document.querySelectorAll('.content-type').forEach(el => {
         el.classList.add('hidden');
     });
 
+    // Show the selected content type
     if (tipe === 'teks') {
         document.getElementById('teks-content').classList.remove('hidden');
     } else if (tipe === 'video') {
@@ -143,12 +176,22 @@ function toggleContentType() {
     } else if (tipe === 'pdf') {
         document.getElementById('pdf-content').classList.remove('hidden');
     }
+
+    // Also show any fields that have validation errors (even if hidden)
+    document.querySelectorAll('.content-type').forEach(el => {
+        if (el.querySelector('.border-red-500, .text-red-500')) {
+            el.classList.remove('hidden');
+        }
+    });
 }
 
-// INIT
+// INIT - run once on page load
 toggleContentType();
 
-// YOUTUBE PREVIEW
+// Listen to type changes
+document.getElementById('tipe')?.addEventListener('change', toggleContentType);
+
+// YouTube Preview
 document.getElementById('url_video')?.addEventListener('input', function() {
     const url = this.value;
     const videoId = extractYouTubeId(url);
@@ -166,7 +209,7 @@ document.getElementById('url_video')?.addEventListener('input', function() {
 });
 
 function extractYouTubeId(url) {
-    const regExp = /^.*(youtu.be\\/|v\\/|u\\/\\w\\/|embed\\/|watch\\?v=|&v=)([^#&?]*).*/;
+    const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
 }

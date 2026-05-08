@@ -21,7 +21,6 @@
                 <a href="{{ route('courses.create') }}"
                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm rounded-xl hover:bg-blue-700">
                     <i class="fas fa-plus"></i>
-                    <span class="font-bold">+</span>
                      Buat Kursus
                 </a>
             @endif
@@ -81,7 +80,9 @@
             <!-- Thumbnail -->
             @if($course->thumbnail)
                 <img src="{{ Storage::url($course->thumbnail) }}"
-                     class="w-full h-44 object-cover">
+                         alt="{{ $course->judul }}"
+                         class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+
             @else
                 <div class="w-full h-44 bg-gray-100 flex items-center justify-center text-gray-400">
                     <i class="fas fa-image text-3xl"></i>

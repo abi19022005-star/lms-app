@@ -44,12 +44,12 @@ class DashboardController extends Controller
         // Kursus terbaru
         $recentCourses = Course::with(['guru', 'kategori'])
             ->latest()
-            ->take(5)
+            ->take(10)
             ->get();
 
         // User terbaru
         $recentUsers = User::latest()
-            ->take(5)
+            ->take(10)
             ->get();
 
         // Statistik per bulan (6 bulan terakhir)

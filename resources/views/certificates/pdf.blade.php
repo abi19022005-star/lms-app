@@ -1,199 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>Certificate PDF</title>
 
-<style>
-    @page {
-        size: A4 landscape;
-        margin: 0;
-    }
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
 
-    body {
-        margin: 0;
-        font-family: DejaVu Sans, sans-serif;
-    }
+        body {
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+        }
 
-    /* Background */
-    .certificate {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        background: url("{{ public_path('certificate/bg.png') }}") no-repeat center;
-        background-size: cover;
-    }
+        .certificate {
+            width: 92.5%;
+            height: 89%;
+            position: relative;
+            background: url("{{ public_path('certificate/bg.png') }}") no-repeat center;
+            background-size: cover;
+            padding: 40px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
 
-    /* Judul */
-    .title {
-        position: absolute;
-        top: 90px;
-        width: 100%;
-        text-align: center;
-        font-size: 48px;
-        font-weight: bold;
-        color: #e11d48;
-        letter-spacing: 5px;
-    }
+        .certificate-container {
+            width: 100%;
+            text-align: center;
+        }
 
-    /* Subtitle */
-    .subtitle {
-        position: absolute;
-        top: 140px;
-        width: 100%;
-        text-align: center;
-        font-size: 18px;
-    }
+        .certificate-header h1 {
+            font-size: 32px;
+            letter-spacing: 3px;
+            margin: 0;
+            color: #4f46e5;
+        }
 
-    /* Diberikan */
-    .given {
-        position: absolute;
-        top: 200px;
-        width: 100%;
-        text-align: center;
-        font-size: 18px;
-    }
+        .certificate-header p {
+            font-size: 14px;
+            margin-top: 5px;
+        }
 
-    /* Nama */
-    .name {
-        position: absolute;
-        top: 240px;
-        width: 100%;
-        text-align: center;
-        font-size: 52px;
-        font-family: "Brush Script MT", cursive;
-        color: red;
-    }
+        .certificate-body {
+            margin-top: 30px;
+        }
 
-    /* Sebagai */
-    .role-label {
-        position: absolute;
-        top: 320px;
-        width: 100%;
-        text-align: center;
-        font-size: 20px;
-    }
+        .certificate-body h2 {
+            font-size: 26px;
+            margin: 20px 0;
+        }
 
-    /* Jabatan */
-    .role {
-        position: absolute;
-        top: 350px;
-        width: 100%;
-        text-align: center;
-        font-size: 26px;
-        font-weight: bold;
-    }
+        .certificate-body h3 {
+            font-size: 22px;
+            margin: 15px 0;
+            color: #4f46e5;
+        }
 
-    /* Deskripsi */
-    .desc {
-        position: absolute;
-        top: 400px;
-        width: 70%;
-        left: 15%;
-        text-align: center;
-        font-size: 16px;
-        line-height: 1.6;
-    }
+        .certificate-body p {
+            font-size: 14px;
+        }
 
-    /* TTD kiri */
-    .ttd-left {
-        position: absolute;
-        bottom: 130px;
-        left: 140px;
-        text-align: center;
-    }
+        .certificate-info {
+            width: 100%;
+            margin-top: 60px;
+        }
 
-    .ttd-left img {
-        width: 120px;
-    }
+        .certificate-info table {
+            width: 100%;
+        }
 
-    /* TTD kanan */
-    .ttd-right {
-        position: absolute;
-        bottom: 130px;
-        right: 140px;
-        text-align: center;
-    }
+        .certificate-info td {
+            text-align: center;
+        }
 
-    .ttd-right img {
-        width: 120px;
-    }
+        .line {
+            width: 200px;
+            border-top: 1px solid #000;
+            margin: 10px auto;
+        }
 
-    /* Nama TTD */
-    .ttd-name {
-        margin-top: 10px;
-        font-size: 14px;
-    }
+        .certificate-footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+        }
 
-    /* Stempel */
-    .stamp {
-        position: absolute;
-        bottom: 140px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .stamp img {
-        width: 120px;
-        opacity: 0.9;
-    }
-</style>
+        .code {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
-
 <body>
 
 <div class="certificate">
 
-    <div class="title">CERTIFICATE</div>
-    <div class="subtitle">OF COMPLETION</div>
+    <div class="certificate-container">
 
-    <p class="text">This certificate is awarded to</p>
-
-    <div class="name">
-        {{ strtoupper($certificate->user->name) }}
-    </div>
-
-    <p class="text">for successfully completing the course</p>
-
-    <div class="course">
-        {{ $certificate->course->judul }}
-    </div>
-
-    <p class="text">
-        on {{ $certificate->issued_at->format('d F Y') }}
-    </p>
-
-    <div class="code">
-        Certificate Code: {{ $certificate->kode_unik }}
-    </div>
-
-    {{-- <!-- TTD kiri -->
-    <div class="ttd-left">
-        <img src="{{ public_path('certificate/ttd1.png') ?? '' }}">
-        <div class="ttd-name">Yogi Eka Putra</div>
-    </div>
-
-    <!-- TTD kanan -->
-    <div class="ttd-right">
-        <img src="{{ public_path('certificate/ttd2.png') ?? '' }}">
-        <div class="ttd-name">Dean Deyopa</div>
-    </div>
-
-    <!-- Stempel -->
-    <div class="stamp">
-        <img src="{{ public_path('certificate/stempel.png') ?? '' }}">
-    </div> --}}
-    <div class="signature-section">
-
-        <div class="signature-item">
-            <div class="line"></div>
-            <div>{{ $certificate->course->guru->name ?? 'Instructor' }}</div>
-            <small>Instructor</small>
+        <!-- HEADER -->
+        <br><br><br>
+        <div class="certificate-header">
+            <h1>CERTIFICATE</h1>
+            <p>OF COMPLETION</p>
         </div>
 
-        <div class="signature-item">
-            <div class="line"></div>
-            <div>LMS Platform</div>
-            <small>Authorized</small>
+        <!-- BODY -->
+        <div class="certificate-body">
+
+            <p>This certificate is awarded to</p>
+
+            <h3>{{ $certificate->user->name }}</h3>
+
+            <p>for successfully completing the course</p>
+
+            <h2>{{ $certificate->course->judul }}</h2>
+
+            <p>on {{ $certificate->issued_at->format('d F Y') }}</p>
+
+            <div class="code">
+                Certificate Code: {{ $certificate->kode_unik }}
+            </div>
+
+        </div>
+
+        <!-- SIGNATURE -->
+        <div class="certificate-info">
+            <table>
+                <tr>
+                    <td>
+                        <div class="line"></div>
+                        <p>{{ $certificate->course->guru->name ?? 'Instructor' }}</p>
+                        <small>Instructor</small>
+                    </td>
+
+                    <td>
+                        <div class="line"></div>
+                        <p>LMS Platform</p>
+                        <small>Authorized</small>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="certificate-footer">
+            Sertifikat ini dapat diverifikasi menggunakan kode unik secara online.
         </div>
 
     </div>

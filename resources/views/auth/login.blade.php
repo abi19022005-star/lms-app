@@ -24,7 +24,7 @@
 
         <!-- Password -->
         <div>
-            <label class="text-sm text-gray-600">Password</label>
+            <label class="text-sm text-gray-600">password</label>
             <div class="relative mt-1">
                 <i class="fas fa-lock absolute left-3 top-3 text-gray-400"></i>
                 <input type="password" name="password" autocomplete="current-password"

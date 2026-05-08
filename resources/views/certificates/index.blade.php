@@ -95,7 +95,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Status</p>
-                        <span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-lg text-xs">
+                        <span class="bg-emerald-100 text-emerald-700 px-3 py-0.45 rounded-lg text-xs">
                             Aktif
                         </span>
                     </div>

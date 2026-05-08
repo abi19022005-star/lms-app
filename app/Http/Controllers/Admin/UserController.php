@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -100,11 +101,29 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'role' => 'required|in:admin,guru,siswa',
             'bio' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($request->filled('password')) {
             $request->validate(['password' => 'min:8|confirmed']);
             $validated['password'] = Hash::make($request->password);
+        }
+
+        // Handle foto upload
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama jika ada
+            if ($user->foto) {
+                Storage::disk('public')->delete($user->foto);
+            }
+
+            $path = $request->file('foto')->store('profile-photos', 'public');
+            $validated['foto'] = $path;
+        } elseif ($request->has('remove_foto')) {
+            // Hapus foto jika checkbox remove_foto dicentang
+            if ($user->foto) {
+                Storage::disk('public')->delete($user->foto);
+            }
+            $validated['foto'] = null;
         }
         
         if ($validated['role'] === 'siswa') {

@@ -122,38 +122,43 @@
                     <i class="fas fa-clock mr-2"></i>Recent Courses
                 </h6>
             </div>
-
             <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-gray-500">
                     <tr>
-                        <th class="px-4 py-3 text-left">Title</th>
-                        <th class="px-4 py-3 text-left">Guru</th>
-                        <th class="px-4 py-3 text-left">Status</th>
+                        <th class="px-4 py-3 text-center">Title</th>
+                        <th class="px-4 py-3 text-right">Guru</th>
+                        <th class="px-4 py-3 text-center">Status</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y">
-                    @forelse($recentCourses ?? [] as $course)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-3">{{ Str::limit($course->judul, 25) }}</td>
-                        <td class="px-4 py-3">{{ $course->guru->name }}</td>
-                        <td class="px-4 py-3">
-                            <span class="px-2 py-1 text-xs rounded-lg
-                                {{ $course->status == 'published'
-                                    ? 'bg-emerald-100 text-emerald-700'
-                                    : 'bg-gray-100 text-gray-600' }}">
-                                {{ ucfirst($course->status) }}
-                            </span>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="3" class="text-center py-6 text-gray-400">
-                            Belum ada kursus
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
             </table>
+
+            <div class="max-h-64 overflow-y-auto">
+                <table class="w-full text-sm">
+
+                    <tbody class="divide-y">
+                        @forelse($recentCourses ?? [] as $course)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3">{{ Str::limit($course->judul, 25) }}</td>
+                            <td class="px-4 py-3 ">{{ $course->guru->name }}</td>
+                            <td class="px-4 py-3">
+                                <span class="px-2 py-1 text-xs rounded-lg
+                                    {{ $course->status == 'published'
+                                        ? 'bg-emerald-100 text-emerald-700'
+                                        : 'bg-gray-100 text-gray-600' }}">
+                                    {{ ucfirst($course->status) }}
+                                </span>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="text-center py-6 text-gray-400">
+                                Belum ada kursus
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Recent Users -->
@@ -163,42 +168,46 @@
                     <i class="fas fa-users mr-2"></i>Recent Users
                 </h6>
             </div>
-
             <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-gray-500">
-                    <tr>
-                        <th class="px-4 py-3 text-left">Name</th>
-                        <th class="px-4 py-3 text-left">Role</th>
-                        <th class="px-4 py-3 text-left">Joined</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y">
-                    @forelse($recentUsers ?? [] as $user)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-3">{{ $user->name }}</td>
-                        <td class="px-4 py-3">
-                            <span class="px-2 py-1 text-xs rounded-lg
-                                {{ $user->role == 'admin'
-                                    ? 'bg-red-100 text-red-700'
-                                    : ($user->role == 'guru'
-                                        ? 'bg-amber-100 text-amber-700'
-                                        : 'bg-blue-100 text-blue-700') }}">
-                                {{ ucfirst($user->role) }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-3 text-gray-500">
-                            {{ $user->created_at->diffForHumans() }}
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="3" class="text-center py-6 text-gray-400">
-                            Belum ada user
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
+                        <tr>
+                            <th class="px-4 py-3 text-center">Name</th>
+                            <th class="px-4 py-3 text-center">Role</th>
+                            <th class="px-4 py-3 text-center">Joined</th>
+                        </tr>
+                    </thead>
             </table>
+
+            <div class="max-h-64 overflow-y-auto">
+                <table class="w-full text-sm">
+                    <tbody class="divide-y">
+                        @forelse($recentUsers ?? [] as $user)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3">{{ $user->name }}</td>
+                            <td class="px-4 py-3">
+                                <span class="px-2 py-1 text-xs rounded-lg
+                                    {{ $user->role == 'admin'
+                                        ? 'bg-red-100 text-red-700'
+                                        : ($user->role == 'guru'
+                                            ? 'bg-amber-100 text-amber-700'
+                                            : 'bg-blue-100 text-blue-700') }}">
+                                    {{ ucfirst($user->role) }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-gray-500">
+                                {{ $user->created_at->diffForHumans() }}
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="text-center py-6 text-gray-400">
+                                Belum ada user
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
